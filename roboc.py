@@ -9,7 +9,6 @@ from labyrinthe import Labyrinthe
 Exécutez-le avec Python pour lancer le jeu.
 """
 
-
 # On charge les cartes existantes
 cartes = []
 for nomFichier in os.listdir("cartes"):
@@ -23,12 +22,10 @@ for nomFichier in os.listdir("cartes"):
 			carte.creerLabyrintheDepuisChaine(contenu)
 			cartes.append(carte)
 
-
 # On affiche les cartes existantes
 print("Labyrinthes existants :")
 for i, carte in enumerate(cartes):
 	print("  {} - {}".format(i + 1, carte.nom))
-
 
 # Choix de la carte
 print()
@@ -38,18 +35,36 @@ print("Affichage carte: {}".format(carte))
 
 # On cherche la position du robot dans la carte
 robot = carte.rechercheRobot()
+obstacles = carte.obstacles
+print("Liste des obstacles: {}".format(obstacles))
 
 #Instanciation du labyrinthe
-labyrinthe = Labyrinthe(robot, "")
+labyrinthe = Labyrinthe(robot, obstacles)
 labyrinthe.setGrille(carte)
 
 # Affichage de la carte
 labyrinthe.afficheCarte()
 labyrinthe.afficheRobotPosition()
 
-# Test déplacement Robot
-labyrinthe.deplacementRobot(5,8)
-labyrinthe.afficheCarte()
+
+sortieTrouvee = False
+
+while sortieTrouvee != True:
+	dep = input("De combien bouge t'on: ")
+	dep = int(dep)
+	robotX, robotY = labyrinthe.getRobotPosition()
+	newPos = (robotX-dep, robotY)
+
+	if labyrinthe.sortieTrouvee(newPos):
+		sortieTrouvee = True
+		print("GAGNE")
+	else:
+		print("pas encore gagné")
+
+	# Test déplacement Robot
+	labyrinthe.deplacementRobot(newPos)
+	labyrinthe.afficheCarte()
+
 
 # Si il y a une partie sauvegardée, on l'affiche, à compléter
 

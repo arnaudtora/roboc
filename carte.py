@@ -8,6 +8,7 @@ class Carte:
 	def __init__(self, nom, chaine):
 		self.nom = nom
 		self.labyrinthe = {}
+		self.obstacles = []
 		self.sizeX = 0
 		self.sizeY = 0
 
@@ -19,18 +20,24 @@ class Carte:
 		"""Méthode permettant la création d'un labyrinthe à partir
 			d'une chaine de caractères"""
 		sizeX = 0
-		sizeY = -1
 
 		# Lecture de la chaine, et sauvegarde en grille
-		for line in chaine.split("\n"):
-			sizeY += 1
-			self.labyrinthe[sizeY] = line
+		for lineNumber, line in enumerate(chaine.split("\n")):
+			self.labyrinthe[lineNumber] = line
+
+			# A t'on des obstacles
+			posY = line.find(".")
+			if posY >= 0:
+				posObstacle = (lineNumber, posY)
+				self.obstacles.append(posObstacle)
+
+			# Récupération taille Max
 			if sizeX < len(line):
 				sizeX = len(line)
 
 		# Enregistrement de nos données
 		self.sizeX = sizeX
-		self.sizeY = sizeY
+		self.sizeY = lineNumber
 
 	def rechercheRobot(self):
 		"""Cette fonction recherche le robot (X) dans la carte, 
