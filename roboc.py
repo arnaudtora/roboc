@@ -50,12 +50,8 @@ labyrinthe.afficheRobotPosition()
 gameInProgress = True
 
 while gameInProgress != False:
-	ret = input("De combien bouge t'on: ")
-	ret = int(ret)
-	robotX, robotY = labyrinthe.getRobotPosition()
-	newPos = (robotX-ret, robotY)
+	newPos = labyrinthe.demandeNewPosition()
 
-	newPos = (0,8)
 	if not labyrinthe.isDeplacementValid(newPos):
 		print("Le déplacement en {} est invalide".format(newPos))
 		continue

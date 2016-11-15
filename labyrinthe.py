@@ -113,8 +113,7 @@ class Labyrinthe:
 			.format(self.robot, newPos))
 
 		# Selon quel axe se déplace t'on ?
-		if robotX == newPosX:
-			#Déplacement selon Y
+		if robotX == newPosX:    # Déplacement selon l'axe Y
 			if robotY < newPosY: # Déplacement vers la droite
 				while robotY < newPosY:
 					robotY += 1
@@ -127,8 +126,7 @@ class Labyrinthe:
 					if self.returnPos((robotX, robotY)) == "O":
 						print("Nous sommes sur un mur, déplacement invalide")
 						return False
-		else:
-			#Déplacement selon X
+		else:                    # Déplacement selon X
 			if robotX < newPosX: # Déplacement vers le bas
 				while robotX < newPosX:
 					robotX += 1
@@ -144,6 +142,48 @@ class Labyrinthe:
 
 		# Toutes les positions traversées sont valides
 		return True
+
+
+	def demandeNewPosition(self):
+		"""Méthode permettant de trouver la position voulue, en lisant l'entrée utilisateur
+			elle renvoi un tuple de position
+			L'entrée est sous forme E4 (direction et distance)
+			Une entrée avec seulement une direction veut dire E1
+			Il faut aussi vérifier le type d'entrée (une lettre, et un chiffre optionnel"""
+		robotX, robotY = self.getRobotPosition()
+
+		entree  = input("Où voulez-vous aller: ")
+
+		# Lecture, et vérification des données
+		direction = entree[0]
+		if direction.isalpha():
+			direction = direction.upper()
+		else:
+			print("Err : valeur d'entrée invalide")
+			return self.demandeNewPosition()
+
+		if len(entree) == 1:
+			distance = 1
+		else:
+			distance = entree[1:]
+			if distance.isnumeric():
+				distance = int(distance)
+			else:
+				print("Err : valeur d'entrée invalide")
+				return self.demandeNewPosition()
+
+		# Conversion de l'entrée en position (tuple)
+		if direction == "E":     # Droite
+			robotY += distance
+		elif direction == "W":   # Gauche
+			robotY -= distance
+		elif direction == "S":   # Bas
+			robotX += distance
+		elif direction == "N":   # Haut
+			robotX -= distance
+		
+		return (robotX,robotY)
+
 
 	def sortieTrouvee(self, newPos):
 		""" Méthode vérifiant si la position pointée vise la sortie, 
