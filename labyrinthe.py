@@ -84,8 +84,8 @@ class Labyrinthe:
 			- enregistrement des nouvelles positions"""
 		robotX, robotY = self.getRobotPosition()
 		newPosX, newPosY = newPos
-		print("Déplacement du Robot : {} => ({}x{})"
-			.format(self.robot, newPosX, newPosY))
+		print("Déplacement du Robot : {} => {}"
+			.format(self.robot, newPos))
 		# Effacement dernière position (' ')
 		line = self.grille[robotX]
 		line = line[:robotY] + ' ' + line[robotY +1:]
@@ -101,6 +101,49 @@ class Labyrinthe:
 		self.grille[newPosX] = line
 		self.robot = (newPosX, newPosY)
 
+
+	def isDeplacementValid(self, newPos):
+		"""Méthode vérifiant si le déplacement est valide
+			- on doit rester sur la carte
+			- on ne peut pas traverser de mur
+			La fonction revoi un booleen"""
+		robotX, robotY = self.getRobotPosition()
+		newPosX, newPosY = newPos
+		print("Vérification du déplacement du Robot : {} => {}"
+			.format(self.robot, newPos))
+
+		# Selon quel axe se déplace t'on ?
+		if robotX == newPosX:
+			#Déplacement selon Y
+			if robotY < newPosY: # Déplacement vers la droite
+				while robotY < newPosY:
+					robotY += 1
+					if self.returnPos((robotX, robotY)) == "O":
+						print("Nous sommes sur un mur, déplacement invalide")
+						return False
+			else:                # Déplacement vers la gauche
+				while robotY > newPosY:
+					robotY -= 1
+					if self.returnPos((robotX, robotY)) == "O":
+						print("Nous sommes sur un mur, déplacement invalide")
+						return False
+		else:
+			#Déplacement selon X
+			if robotX < newPosX: # Déplacement vers le bas
+				while robotX < newPosX:
+					robotX += 1
+					if self.returnPos((robotX, robotY)) == "O":
+						print("Nous sommes sur un mur, déplacement invalide")
+						return False
+			else:                # Déplacement vers le haut
+				while robotX > newPosX:
+					robotX -= 1
+					if self.returnPos((robotX, robotY)) == "O":
+						print("Nous sommes sur un mur, déplacement invalide")
+						return False
+
+		# Toutes les positions traversées sont valides
+		return True
 
 	def sortieTrouvee(self, newPos):
 		""" Méthode vérifiant si la position pointée vise la sortie, 

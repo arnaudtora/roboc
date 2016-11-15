@@ -47,24 +47,33 @@ labyrinthe.afficheCarte()
 labyrinthe.afficheRobotPosition()
 
 
-sortieTrouvee = False
+gameInProgress = True
 
-while sortieTrouvee != True:
-	dep = input("De combien bouge t'on: ")
-	dep = int(dep)
+while gameInProgress != False:
+	ret = input("De combien bouge t'on: ")
+	ret = int(ret)
 	robotX, robotY = labyrinthe.getRobotPosition()
-	newPos = (robotX-dep, robotY)
+	newPos = (robotX-ret, robotY)
 
-	if labyrinthe.sortieTrouvee(newPos):
-		sortieTrouvee = True
-		print("GAGNE")
-	else:
-		print("pas encore gagné")
+	newPos = (0,8)
+	if not labyrinthe.isDeplacementValid(newPos):
+		print("Le déplacement en {} est invalide".format(newPos))
+		continue
+		
+	print("Vérification OK, on se déplace")
 
-	# Test déplacement Robot
+
+	sortieTrouvee = labyrinthe.sortieTrouvee(newPos)
+
+	# Déplacement Robot
 	labyrinthe.deplacementRobot(newPos)
 	labyrinthe.afficheCarte()
 
+	if sortieTrouvee:
+		print("GAGNE")
+		gameInProgress = False
+	else:
+		print("pas encore gagné")
 
 # Si il y a une partie sauvegardée, on l'affiche, à compléter
 
