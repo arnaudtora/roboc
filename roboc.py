@@ -50,7 +50,13 @@ labyrinthe.afficheRobotPosition()
 gameInProgress = True
 
 while gameInProgress != False:
-	newPos = labyrinthe.demandeNewPosition()
+	newPos = (-1,-1)
+	while newPos != (-1,-1)
+		entree  = input("Où voulez-vous aller: ")
+		if entree == "Q":   # Sauvegarde et fin
+			# sauvergarde
+		else
+			newPos = labyrinthe.demandeNewPosition(entree)
 
 	if not labyrinthe.isDeplacementValid(newPos):
 		print("Le déplacement en {} est invalide".format(newPos))

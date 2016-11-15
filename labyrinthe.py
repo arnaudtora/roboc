@@ -144,7 +144,7 @@ class Labyrinthe:
 		return True
 
 
-	def demandeNewPosition(self):
+	def demandeNewPosition(self, entree):
 		"""Méthode permettant de trouver la position voulue, en lisant l'entrée utilisateur
 			elle renvoi un tuple de position
 			L'entrée est sous forme E4 (direction et distance)
@@ -152,15 +152,13 @@ class Labyrinthe:
 			Il faut aussi vérifier le type d'entrée (une lettre, et un chiffre optionnel"""
 		robotX, robotY = self.getRobotPosition()
 
-		entree  = input("Où voulez-vous aller: ")
-
 		# Lecture, et vérification des données
 		direction = entree[0]
 		if direction.isalpha():
 			direction = direction.upper()
 		else:
 			print("Err : valeur d'entrée invalide")
-			return self.demandeNewPosition()
+			return (-1,-1)
 
 		if len(entree) == 1:
 			distance = 1
@@ -170,7 +168,7 @@ class Labyrinthe:
 				distance = int(distance)
 			else:
 				print("Err : valeur d'entrée invalide")
-				return self.demandeNewPosition()
+				return (-1,-1)
 
 		# Conversion de l'entrée en position (tuple)
 		if direction == "E":     # Droite
