@@ -12,9 +12,11 @@ class Carte:
 		self.sizeX = 0
 		self.sizeY = 0
 
+
 	def __repr__(self):
 		return "<Carte {}, dont la taille est {}x{}>" \
 			.format(self.nom, self.sizeX, self.sizeY)
+
 
 	def creerLabyrintheDepuisChaine(self, chaine):
 		"""Méthode permettant la création d'un labyrinthe à partir
@@ -22,13 +24,13 @@ class Carte:
 		sizeY = 0
 
 		# Lecture de la chaine, et sauvegarde en grille
-		for lineNumber, line in enumerate(chaine.split("\n")):
-			self.labyrinthe[lineNumber] = line
+		for lineNum, line in enumerate(chaine.split("\n")):
+			self.labyrinthe[lineNum] = line
 
 			# A t'on des obstacles
 			posY = line.find(".")
 			if posY >= 0:
-				posObstacle = (lineNumber, posY)
+				posObstacle = (lineNum, posY)
 				self.obstacles.append(posObstacle)
 
 			# Récupération taille Max
@@ -36,8 +38,9 @@ class Carte:
 				sizeY = len(line)
 
 		# Enregistrement de nos données
-		self.sizeX = lineNumber+1
+		self.sizeX = lineNum+1
 		self.sizeY = sizeY
+
 
 	def rechercheRobot(self):
 		"""Cette fonction recherche le robot (X) dans la carte, 

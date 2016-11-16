@@ -4,6 +4,7 @@
 import os
 from carte import Carte
 from labyrinthe import Labyrinthe
+from robot import Robot
 
 """Ce fichier contient le code principal du jeu.
 Exécutez-le avec Python pour lancer le jeu.
@@ -62,7 +63,6 @@ for i, carte in enumerate(cartes):
 numeroCarte = choixCarte(len(cartes))
 carte = cartes[numeroCarte-1]
 print("\nLa carte choisi est {}".format(carte.nom))
-print("Affichage carte: {}".format(carte))
 
 # Une sauvegarde existe t'elle pour cette carte ? (sauvegarde/nomCarteSave.txt)
 for nomFichier in os.listdir("sauvegarde"):
@@ -72,8 +72,11 @@ for nomFichier in os.listdir("sauvegarde"):
 
 
 # On cherche la position du robot dans la carte
-robot = carte.rechercheRobot()
+posRobotX, posRobotY = carte.rechercheRobot()
 obstacles = carte.obstacles
+
+# On instancie notre robot
+robot = Robot("R2D2", posRobotX, posRobotY)
 
 #Instanciation du labyrinthe
 labyrinthe = Labyrinthe(robot, obstacles)
@@ -86,7 +89,7 @@ labyrinthe.afficheCarte()
 gameInProgress = True
 while gameInProgress != False:
 	# Affichage de la carte à chaque coup	
-	labyrinthe.afficheRobotPosition()
+	robot.afficheRobotPosition()
 
 	# Sauvegarde automatique du jeu à chaque coup
 	labyrinthe.sauvegardeJeu(carte.nom)
