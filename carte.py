@@ -19,7 +19,7 @@ class Carte:
 	def creerLabyrintheDepuisChaine(self, chaine):
 		"""Méthode permettant la création d'un labyrinthe à partir
 			d'une chaine de caractères"""
-		sizeX = 0
+		sizeY = 0
 
 		# Lecture de la chaine, et sauvegarde en grille
 		for lineNumber, line in enumerate(chaine.split("\n")):
@@ -32,12 +32,12 @@ class Carte:
 				self.obstacles.append(posObstacle)
 
 			# Récupération taille Max
-			if sizeX < len(line):
-				sizeX = len(line)
+			if sizeY < len(line):
+				sizeY = len(line)
 
 		# Enregistrement de nos données
-		self.sizeX = sizeX
-		self.sizeY = lineNumber
+		self.sizeX = lineNumber+1
+		self.sizeY = sizeY
 
 	def rechercheRobot(self):
 		"""Cette fonction recherche le robot (X) dans la carte, 

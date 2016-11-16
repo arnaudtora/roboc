@@ -1,5 +1,6 @@
 # -*-coding:Utf-8 -*
 
+import os
 from carte import Carte
 
 """Ce module contient la classe Labyrinthe."""
@@ -9,6 +10,12 @@ class Labyrinthe:
 	"""Classe représentant un labyrinthe."""
 
 	def __init__(self, robot, obstacles):
+		""" Constructeur de notre labyrinthe, qui contient les objets
+			- robot (tuple de position)
+			- grille du labyrinthe
+			- liste des obstacles
+			- taille en X
+			- taille en Y   """
 		self.robot = robot
 		self.grille = {}
 		self.obstacles = obstacles
@@ -26,6 +33,9 @@ class Labyrinthe:
 	def returnPos(self, pos):
 		"""Retourne le contenu d'un position"""
 		x, y = pos
+
+		if x >= self.sizeX or y >= self.sizeY:
+			return "-"
 		return self.grille[x][y]
 
 
@@ -43,7 +53,7 @@ class Labyrinthe:
 			- un . une porte
 			- un X la position du robot"""
 		sizeX = 0
-		print("\n\t 0123456789")
+		print("\n\t 01234567890")
 		while sizeX < self.sizeX:
 			line = self.grille[sizeX]
 			print("{}\t {}".format(sizeX, line))
@@ -84,8 +94,7 @@ class Labyrinthe:
 			- enregistrement des nouvelles positions"""
 		robotX, robotY = self.getRobotPosition()
 		newPosX, newPosY = newPos
-		print("Déplacement du Robot : {} => {}"
-			.format(self.robot, newPos))
+
 		# Effacement dernière position (' ')
 		line = self.grille[robotX]
 		line = line[:robotY] + ' ' + line[robotY +1:]
@@ -109,8 +118,6 @@ class Labyrinthe:
 			La fonction revoi un booleen"""
 		robotX, robotY = self.getRobotPosition()
 		newPosX, newPosY = newPos
-		print("Vérification du déplacement du Robot : {} => {}"
-			.format(self.robot, newPos))
 
 		# Selon quel axe se déplace t'on ?
 		if robotX == newPosX:    # Déplacement selon l'axe Y
@@ -140,6 +147,11 @@ class Labyrinthe:
 						print("Nous sommes sur un mur, déplacement invalide")
 						return False
 
+		# Vérification si nous sommes toujours sur la carte
+		if robotX >= self.sizeX or robotY >= self.sizeY:
+			print("Nous sommes hors carte, déplacement invalide")
+			return False
+
 		# Toutes les positions traversées sont valides
 		return True
 
@@ -153,6 +165,10 @@ class Labyrinthe:
 		robotX, robotY = self.getRobotPosition()
 
 		# Lecture, et vérification des données
+		if len(entree) == 0:
+			print("Err : valeur d'entrée invalide")
+			return (-1,-1)
+
 		direction = entree[0]
 		if direction.isalpha():
 			direction = direction.upper()
@@ -190,3 +206,20 @@ class Labyrinthe:
 			return True
 		else:
 			return False
+
+	def sauvegardeJeu(self, nom):
+		""" Méthode sauvegardant le jeu pour y revenir ultérieurment"""
+		nomFichier = "sauvegarde/" + nom + "Save.txt"
+		with open(nomFichier, "w") as fichier:
+			lineNum = 0
+			while lineNum < self.sizeX:
+				# Saut de ligne, sauf pour la 1ere ligne
+				if not lineNum == 0:
+					ligne = "\n"
+				else:
+					ligne = ""
+				ligne += self.grille[lineNum] 
+
+				# Ecriture dans le fichier
+				fichier.write(ligne)
+				lineNum += 1
