@@ -12,10 +12,11 @@ Exécutez-le avec Python pour lancer le jeu.
 
 def choixCarte(nbCartes):
 	ret = input("Entrez un numéro de labyrinthe pour commencer à jouer: ")
-	if not ret.isnumeric():
+	expression = r"^[1,9]{1,2}$"
+	if re.match(expression, ret) is None:
 		return choixCarte(nbCartes)
-	ret = int(ret)
 
+	ret = int(ret)
 	if ret > nbCartes:
 		return choixCarte(nbCartes)
 

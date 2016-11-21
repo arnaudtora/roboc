@@ -1,6 +1,8 @@
 # -*-coding:Utf-8 -*
 
 import os
+import re
+
 from carte import Carte
 from robot import Robot
 
@@ -154,27 +156,20 @@ class Labyrinthe:
 			Il faut aussi vérifier le type d'entrée (une lettre, et un chiffre optionnel"""
 		robotX, robotY = self.robot.getRobotPosition()
 
-		# Lecture, et vérification des données
-		if len(entree) == 0:
-			print("Err : valeur d'entrée invalide")
+
+		# Vérification de l'entrée avec une expression régulière
+		expression = r"^[nsewNSEW]{1}[1-9]{,2}$"
+		if re.match(expression, entree) is None:
 			return (-1,-1)
 
 		direction = entree[0]
-		if direction.isalpha():
-			direction = direction.upper()
-		else:
-			print("Err : valeur d'entrée invalide")
-			return (-1,-1)
-
+		direction = direction.upper()
+		
 		if len(entree) == 1:
 			distance = 1
 		else:
 			distance = entree[1:]
-			if distance.isnumeric():
-				distance = int(distance)
-			else:
-				print("Err : valeur d'entrée invalide")
-				return (-1,-1)
+			distance = int(distance)
 
 		# Conversion de l'entrée en position (tuple)
 		if direction == "E":     # Droite
@@ -185,9 +180,6 @@ class Labyrinthe:
 			robotX += distance
 		elif direction == "N":   # Haut
 			robotX -= distance
-		else:
-			print("Err : valeur d'entrée invalide")
-			return (-1,-1)
 		
 		return (robotX,robotY)
 
